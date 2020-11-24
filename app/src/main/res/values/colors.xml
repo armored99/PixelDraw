@@ -2,5 +2,16 @@
 <resources>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#BB86FC</color>
+
+    <array name="pixelColors">
+        <item>#F44336</item>
+        <item>#2196F3</item>
+        <item>#4CAF50</item>
+        <item>#FFEB3B</item>
+        <item>#673AB7</item>
+        <item>#000</item>
+        <item>#FFF</item>
+        <item>#C0C0C0</item>
+    </array>
 </resources>
