@@ -14,4 +14,10 @@
         <item>#FFF</item>
         <item>#C0C0C0</item>
     </array>
+    <color name="colorBackgroundDark">#000</color>
+    <color name="colorAppBar">#023</color>
+    <color name="colorText">#BBB</color>
+    <color name="colorTextSecondary">#999</color>
+    <color name="colorButton">#555</color>
+    <color name="colorCheckBox">#858585</color>
 </resources>

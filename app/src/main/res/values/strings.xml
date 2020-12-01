@@ -3,4 +3,22 @@
     <string name="new_canvas">New Canvas</string>
     <string name="strokes">Strokes</string>
     <string name="pixels">Pixels</string>
+    <string name="pref_title_theme">Dark theme</string>
+    <string name="pref_description_theme">Turn on dark theme</string>
+    <string name="pref_title_pixel_grid_size">Pixel Grid Size</string>
+    <string name="pref_title_subject_order">Subject order</string>
+    <string name="pref_none">None</string>
+    <string name="settings">Settings</string>
+
+    <string-array name="pref_subject_order">
+        <item>Alphabetic</item>
+        <item>Most recent first</item>
+        <item>Oldest first</item>
+    </string-array>
+
+    <string-array name="pref_subject_order_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>

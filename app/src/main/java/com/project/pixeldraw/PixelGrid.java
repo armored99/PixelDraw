@@ -137,7 +137,7 @@ public class PixelGrid extends View {
         for (int row = 0; row < PixelGame.GRID_SIZE; row++) {
             for (int col = 0; col < PixelGame.GRID_SIZE; col++) {
                 Pixel Pixel = mGame.getPixel(row, col);
-                Pixel.radius = Pixel_RADIUS;
+                 Pixel.radius = Pixel_RADIUS;
                 Pixel.centerX = col * mCellWidth + (mCellWidth / 2);
                 Pixel.centerY = row * mCellHeight + (mCellHeight / 2);
             }
