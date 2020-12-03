@@ -1,5 +1,8 @@
 package com.project.pixeldraw;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,10 +10,9 @@ import java.util.Comparator;
 public class PixelGame {
 
     public static int NUM_COLORS = 5;
-    public static int GRID_SIZE = 10;
+    public static int GRID_SIZE = Integer.parseInt(MainActivity.mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
 
     public enum AddPixelStatus { Added, Rejected, Removed };
-
     private static PixelGame mPixelsGame;
 
     private int mStrokes;
@@ -19,9 +21,7 @@ public class PixelGame {
     private ArrayList<Pixel> mSelectedPixels;
 
     private PixelGame() {
-
         mScore = 0;
-
         // Create Pixels for the 2d array
         mPixels = new Pixel[GRID_SIZE][GRID_SIZE];
         for (int row = 0; row < GRID_SIZE; row++) {
@@ -38,6 +38,15 @@ public class PixelGame {
             mPixelsGame = new PixelGame();
         }
         return mPixelsGame;
+    }
+    public void changeSize(int mGRID_SIZE) {
+        GRID_SIZE = mGRID_SIZE;
+        mPixels = new Pixel[GRID_SIZE][GRID_SIZE];
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                mPixels[row][col] = new Pixel(row, col);
+            }
+        }
     }
 
     public int getMovesLeft() {
@@ -111,7 +120,7 @@ public class PixelGame {
             if (!Pixel.selected) {
                 // Make sure new is same color and adjacent to last selected Pixel
                 Pixel lastPixel = getLastSelectedPixel();
-                if (lastPixel.color == Pixel.color && lastPixel.isAdjacent(Pixel)) {
+                if (lastPixel.isAdjacent(Pixel)) {
                     mSelectedPixels.add(Pixel);
                     Pixel.selected = true;
                     status = AddPixelStatus.Added;
@@ -131,6 +140,7 @@ public class PixelGame {
         return status;
     }
 
+
     // Sort by rows ascending
     private void sortSelectedPixels() {
         Collections.sort(mSelectedPixels, new Comparator<Pixel>() {
@@ -148,11 +158,11 @@ public class PixelGame {
 
             // Move all Pixels above each selected Pixel down by changing color
             for (Pixel Pixel : mSelectedPixels) {
-                for (int row = Pixel.row; row > 0; row--) {
-                    //Pixel PixelCurrent = mPixels[row][Pixel.col];
-                    //Pixel PixelAbove = mPixels[row - 1][Pixel.col];
-                    //PixelCurrent.color = PixelAbove.color;
-                }
+                /*for (int row = Pixel.row; row > 0; row--) {
+                    Pixel PixelCurrent = mPixels[row][Pixel.col];
+                    Pixel PixelAbove = mPixels[row - 1][Pixel.col];
+                    PixelCurrent.color = PixelAbove.color;
+                }*/
                 Pixel PixelCurrent = mPixels[Pixel.row][Pixel.col];
                 PixelCurrent.setRandomColor();
                 // Add new Pixel at top
@@ -177,6 +187,10 @@ public class PixelGame {
                 mPixels[row][col].setColor();
             }
         }
+    }
+
+    public void resetCanvas() {
+        mPixelsGame = new PixelGame();
     }
 
     /* Determine if the game is over

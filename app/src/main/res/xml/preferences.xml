@@ -19,6 +19,6 @@
         android:id="@+id/PGS"
         android:defaultValue="20"
         android:key="pref_pixel_grid_size"
-        android:inputType="numberPassword"
+        android:inputType="number"
         android:title="@string/pref_title_pixel_grid_size" />
 </PreferenceScreen>

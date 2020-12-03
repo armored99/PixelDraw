@@ -142,6 +142,7 @@ public class PixelGrid extends View {
                 Pixel.centerY = row * mCellHeight + (mCellHeight / 2);
             }
         }
+        mGame = PixelGame.getInstance();
     }
 
     public void animatePixels() {

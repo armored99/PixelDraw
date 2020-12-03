@@ -2,6 +2,7 @@ package com.project.pixeldraw;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -31,7 +32,7 @@ public class SettingsFragment extends PreferenceFragment
         // Access the default shared prefs
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(getActivity());
-
+        
         setPrefSummarySubjectOrder(sharedPrefs);
         setPrefSummaryPixelGridSize(sharedPrefs);
     }

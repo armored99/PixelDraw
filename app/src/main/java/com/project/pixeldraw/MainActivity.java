@@ -3,6 +3,9 @@ package com.project.pixeldraw;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,17 +20,18 @@ import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PixelGame mGame;
+    public PixelGame mGame;
     private PixelGrid mPixelsGrid;
     private TextView mStrokes;
     private TextView mPixels;
     private boolean mDarkTheme;
-    private SharedPreferences mSharedPrefs;
+    public static SharedPreferences mSharedPrefs;
+    private int GRID_SIZE;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         mDarkTheme = mSharedPrefs.getBoolean(SettingsFragment.PREFERENCE_THEME, false);
         if (mDarkTheme) {
             setTheme(R.style.DarkTheme);
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mPixels = findViewById(R.id.pixel);
         mPixelsGrid = findViewById(R.id.gameGrid);
         mPixelsGrid.setGridListener(mGridListener);
-
+        GRID_SIZE = Integer.parseInt(mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
         mGame = PixelGame.getInstance();
         newGame();
     }
@@ -80,10 +84,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         // If theme changed, recreate the activity so theme is applied
         boolean darkTheme = mSharedPrefs.getBoolean(SettingsFragment.PREFERENCE_THEME, false);
         if (darkTheme != mDarkTheme) {
+            recreate();
+        }
+        int mGRID_SIZE = Integer.parseInt(mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
+        if (mGRID_SIZE != GRID_SIZE) {
+            GRID_SIZE = Integer.parseInt(mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
+            mGame.changeSize(GRID_SIZE);
             recreate();
         }
 
