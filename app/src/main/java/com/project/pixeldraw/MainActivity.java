@@ -1,5 +1,6 @@
 package com.project.pixeldraw;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -8,15 +9,27 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean mDarkTheme;
     public static SharedPreferences mSharedPrefs;
     private int GRID_SIZE;
+    private final int REQUEST_WRITE_CODE = 0;
 
 
     @Override
@@ -45,6 +59,71 @@ public class MainActivity extends AppCompatActivity {
         GRID_SIZE = Integer.parseInt(mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
         mGame = PixelGame.getInstance();
         newGame();
+    }
+
+    /*private boolean hasFilePermissions() {
+        String writePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        if (ContextCompat.checkSelfPermission(this, writePermission)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, writePermission )) {
+                //showPermissionRationaleDialog();
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[] { writePermission }, REQUEST_WRITE_CODE);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_WRITE_CODE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted!
+                }
+                else {
+                    // Permission denied!
+                }
+                return;
+            }
+        }
+    }*/
+    public void saveImageToExternalStorage (){
+        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        File myDir = new File(root + "/saved_images");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-" + n + ".jpg";
+        File file = new File(myDir, fname);
+        if (file.exists())
+            file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            mPixelsGrid.mCanvas.setBitmap(mPixelsGrid.mBitmap);
+            mPixelsGrid.mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        // Tell the media scanner about the new file so that it is
+        // immediately available to the user.
+        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    }
+                });
+
     }
 
     private PixelGrid.PixelsGridListener mGridListener = new PixelGrid.PixelsGridListener() {
@@ -99,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void newGameClick(View view) {
+        saveImageToExternalStorage();
         // Animate down off screen
         ObjectAnimator moveBoardOff = ObjectAnimator.ofFloat(mPixelsGrid,
                 "translationY", mPixelsGrid.getHeight() * 1.5f);

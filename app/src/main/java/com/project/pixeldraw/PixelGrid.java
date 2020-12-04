@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -35,6 +36,8 @@ public class PixelGrid extends View {
     private int mCellHeight;
     private Paint mPixelPaint;
     private Paint mPathPaint;
+    public Canvas mCanvas;
+    public Bitmap mBitmap;
 
     private AnimatorSet mAnimatorSet;
 
@@ -57,6 +60,7 @@ public class PixelGrid extends View {
         mPathPaint.setStrokeWidth(10);
         mPathPaint.setStyle(Paint.Style.STROKE);
         mAnimatorSet = new AnimatorSet();
+        mBitmap = Bitmap.createBitmap( PixelGame.GRID_SIZE, PixelGame.GRID_SIZE, Bitmap.Config.RGB_565 );
     }
 
     @Override
@@ -95,6 +99,7 @@ public class PixelGrid extends View {
 
                 mPathPaint.setColor(mPixelColors[7]);
                 canvas.drawPath(path, mPathPaint);
+                mCanvas = canvas;
             }
         }
     }

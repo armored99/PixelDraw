@@ -32,7 +32,7 @@ public class SettingsFragment extends PreferenceFragment
         // Access the default shared prefs
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(getActivity());
-        
+
         setPrefSummarySubjectOrder(sharedPrefs);
         setPrefSummaryPixelGridSize(sharedPrefs);
     }
