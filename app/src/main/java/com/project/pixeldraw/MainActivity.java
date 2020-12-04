@@ -57,20 +57,21 @@ public class MainActivity extends AppCompatActivity {
         mPixelsGrid = findViewById(R.id.gameGrid);
         mPixelsGrid.setGridListener(mGridListener);
         GRID_SIZE = Integer.parseInt(mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
+        mPixels.setText(Integer.toString(GRID_SIZE));
         mGame = PixelGame.getInstance();
         newGame();
     }
 
-    /*private boolean hasFilePermissions() {
+    private boolean hasFilePermissions() {
         String writePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
         if (ContextCompat.checkSelfPermission(this, writePermission)
                 != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, writePermission )) {
-                //showPermissionRationaleDialog();
-            } else {
+            //if (ActivityCompat.shouldShowRequestPermissionRationale(this, writePermission )) {
+            //    showPermissionRationaleDialog();
+            //} else {
                 ActivityCompat.requestPermissions(this,
                         new String[] { writePermission }, REQUEST_WRITE_CODE);
-            }
+            //}
             return false;
         }
         return true;
@@ -91,38 +92,40 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-    }*/
-    public void saveImageToExternalStorage (){
-        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-        File myDir = new File(root + "/saved_images");
-        myDir.mkdirs();
-        Random generator = new Random();
-        int n = 10000;
-        n = generator.nextInt(n);
-        String fname = "Image-" + n + ".jpg";
-        File file = new File(myDir, fname);
-        if (file.exists())
-            file.delete();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            mPixelsGrid.mCanvas.setBitmap(mPixelsGrid.mBitmap);
-            mPixelsGrid.mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    }
+    public void saveImageToExternalStorage (View view){
+        if (hasFilePermissions()) {
+            String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+            File myDir = new File(root + "/saved_images");
+            myDir.mkdirs();
+            Random generator = new Random();
+            int n = 10000;
+            n = generator.nextInt(n);
+            String fname = "Image-" + n + ".jpg";
+            File file = new File(myDir, fname);
+            if (file.exists())
+               file.delete();
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                mPixelsGrid.getBitmap().compress(Bitmap.CompressFormat.JPEG, 10, out);
+                //mPixelsGrid.mBitmap.compress(Bitmap.CompressFormat.JPEG, 10, out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            // Tell the media scanner about the new file so that it is
+            // immediately available to the user.
+            MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
         }
-
-
-        // Tell the media scanner about the new file so that it is
-        // immediately available to the user.
-        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
-                    public void onScanCompleted(String path, Uri uri) {
-                        Log.i("ExternalStorage", "Scanned " + path + ":");
-                        Log.i("ExternalStorage", "-> uri=" + uri);
-                    }
-                });
 
     }
 
@@ -171,14 +174,15 @@ public class MainActivity extends AppCompatActivity {
         int mGRID_SIZE = Integer.parseInt(mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
         if (mGRID_SIZE != GRID_SIZE) {
             GRID_SIZE = Integer.parseInt(mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
+            mPixels.setText(Integer.toString(GRID_SIZE));
             mGame.changeSize(GRID_SIZE);
             recreate();
         }
 
     }
 
+
     public void newGameClick(View view) {
-        saveImageToExternalStorage();
         // Animate down off screen
         ObjectAnimator moveBoardOff = ObjectAnimator.ofFloat(mPixelsGrid,
                 "translationY", mPixelsGrid.getHeight() * 1.5f);
@@ -206,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateMovesAndScore() {
         mStrokes.setText(Integer.toString(mGame.getMovesLeft()));
-        mPixels.setText(Integer.toString(mGame.getScore()));
+        //mPixels.setText(Integer.toString(mGame.getScore()));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

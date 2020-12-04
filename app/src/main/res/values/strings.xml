@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Pixel Draw</string>
     <string name="new_canvas">New Canvas</string>
+    <string name="save_photo">Save as Photo</string>
     <string name="strokes">Strokes</string>
     <string name="pixels">Pixels</string>
     <string name="pref_title_theme">Dark theme</string>

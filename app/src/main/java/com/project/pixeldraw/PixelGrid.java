@@ -36,9 +36,6 @@ public class PixelGrid extends View {
     private int mCellHeight;
     private Paint mPixelPaint;
     private Paint mPathPaint;
-    public Canvas mCanvas;
-    public Bitmap mBitmap;
-
     private AnimatorSet mAnimatorSet;
 
     // private AnimatorSet mAnimatorSet;
@@ -60,7 +57,14 @@ public class PixelGrid extends View {
         mPathPaint.setStrokeWidth(10);
         mPathPaint.setStyle(Paint.Style.STROKE);
         mAnimatorSet = new AnimatorSet();
-        mBitmap = Bitmap.createBitmap( PixelGame.GRID_SIZE, PixelGame.GRID_SIZE, Bitmap.Config.RGB_565 );
+
+    }
+
+    public Bitmap getBitmap(){
+        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        draw(canvas);
+        return bitmap;
     }
 
     @Override
@@ -99,7 +103,6 @@ public class PixelGrid extends View {
 
                 mPathPaint.setColor(mPixelColors[7]);
                 canvas.drawPath(path, mPathPaint);
-                mCanvas = canvas;
             }
         }
     }
