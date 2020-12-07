@@ -5,14 +5,15 @@
     <color name="colorAccent">#BB86FC</color>
 
     <array name="pixelColors">
-        <item>#F44336</item>
-        <item>#2196F3</item>
-        <item>#4CAF50</item>
-        <item>#FFEB3B</item>
-        <item>#673AB7</item>
-        <item>#000</item>
-        <item>#FFF</item>
-        <item>#C0C0C0</item>
+        <item name="red">#FF0000</item>
+        <item name="blue">#2196F3</item>
+        <item name="green">#4CAF50</item>
+        <item name="orange">#f18000</item>
+        <item name="yellow">#FFEB3B</item>
+        <item name="purple">#673AB7</item>
+        <item name="black">#000</item>
+        <item name="white">#FFF</item>
+        <item name="grey">#C0C0C0</item>
     </array>
     <color name="colorBackgroundDark">#000</color>
     <color name="colorAppBar">#023</color>

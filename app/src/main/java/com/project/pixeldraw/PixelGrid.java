@@ -37,6 +37,7 @@ public class PixelGrid extends View {
     private Paint mPixelPaint;
     private Paint mPathPaint;
     private AnimatorSet mAnimatorSet;
+    public int mPixelColor = 6;
 
     // private AnimatorSet mAnimatorSet;
 
@@ -66,6 +67,9 @@ public class PixelGrid extends View {
         draw(canvas);
         return bitmap;
     }
+    public int[] getmPixelsColor(){
+        return mPixelColors;
+    }
 
     @Override
     protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
@@ -84,7 +88,7 @@ public class PixelGrid extends View {
         for (int row = 0; row < PixelGame.GRID_SIZE; row++) {
             for (int col = 0; col < PixelGame.GRID_SIZE; col++) {
                 Pixel Pixel = mGame.getPixel(row, col);
-                mPixelPaint.setColor(mPixelColors[Pixel.color]);
+                mPixelPaint.setColor(mPixelColors[mPixelColor]);
                 canvas.drawRect(col * mCellHeight, row * mCellWidth, col * mCellHeight + mCellHeight, row * mCellWidth + mCellWidth, mPixelPaint);
             }
         }

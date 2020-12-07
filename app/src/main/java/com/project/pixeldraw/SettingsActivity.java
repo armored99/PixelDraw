@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.View;
 
 public class SettingsActivity extends AppCompatActivity {
         private boolean mDarkTheme;
@@ -18,6 +17,7 @@ public class SettingsActivity extends AppCompatActivity {
                         setTheme(R.style.DarkTheme);
                 }
                 super.onCreate(savedInstanceState);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
                 // Display the fragment as the main content
                 getFragmentManager().beginTransaction()
@@ -25,4 +25,24 @@ public class SettingsActivity extends AppCompatActivity {
                         .commit();
         }
 
+/*        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+
+                // Inflate menu for the app bar
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.prior_menu, menu);
+                return true;
+        }
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+
+                // Determine which app bar item was chosen
+                switch (item.getItemId()) {
+                        case R.id.previous:
+
+                        default:
+                                return super.onOptionsItemSelected(item);
+                }
+        }
+*/
 }

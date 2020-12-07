@@ -21,7 +21,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -33,9 +36,10 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    public PixelGame mGame;
-    private PixelGrid mPixelsGrid;
+    private PixelGame mGame;
+    public static PixelGrid mPixelsGrid;
     private TextView mStrokes;
+    private static ImageView mColorImage;
     private TextView mPixels;
     private boolean mDarkTheme;
     public static SharedPreferences mSharedPrefs;
@@ -54,12 +58,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mStrokes = findViewById(R.id.strokes);
         mPixels = findViewById(R.id.pixel);
+        mColorImage = findViewById(R.id.colorImage);
         mPixelsGrid = findViewById(R.id.gameGrid);
         mPixelsGrid.setGridListener(mGridListener);
         GRID_SIZE = Integer.parseInt(mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
         mPixels.setText(Integer.toString(GRID_SIZE));
         mGame = PixelGame.getInstance();
         newGame();
+    }
+    public void ChangeColor(View view){
+        Intent intent = new Intent(MainActivity.this, ColorActivity.class);
+        startActivity(intent);
+    }
+    public static void UpdateColor(int mColor){
+        mPixelsGrid.mPixelColor = mColor;
+        mColorImage.setBackgroundColor(mPixelsGrid.getmPixelsColor()[mColor]);
     }
 
     private boolean hasFilePermissions() {
@@ -93,11 +106,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    //Creates and image file and then loads a JPEG into it. (Uses a deprecated method.)
     public void saveImageToExternalStorage (View view){
         if (hasFilePermissions()) {
             String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
             File myDir = new File(root + "/saved_images");
             myDir.mkdirs();
+            //randomly generates a file name that should be unique.
             Random generator = new Random();
             int n = 10000;
             n = generator.nextInt(n);
@@ -111,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 //mPixelsGrid.mBitmap.compress(Bitmap.CompressFormat.JPEG, 10, out);
                 out.flush();
                 out.close();
+                Toast.makeText(this, R.string.photo_saved, Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }

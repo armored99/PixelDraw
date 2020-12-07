@@ -49,6 +49,17 @@
         app:layout_constraintTop_toTopOf="@+id/pixelLabel"
         app:layout_constraintBottom_toBottomOf="@+id/pixelLabel"/>
 
+    <Button
+        android:id="@+id/colorPickerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_color"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginBottom="50dp"
+        android:onClick="ChangeColor"
+        app:layout_constraintBottom_toTopOf="@+id/gameGrid"
+        app:layout_constraintLeft_toLeftOf="@+id/gameGrid" />
+
     <com.project.pixeldraw.PixelGrid
         android:id="@+id/gameGrid"
         android:layout_width="300dp"
@@ -79,5 +90,14 @@
         android:onClick="saveImageToExternalStorage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/gameGrid" />
+
+    <ImageView
+        android:id="@+id/colorImage"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="#000"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPickerButton"
+        app:layout_constraintStart_toEndOf="@+id/colorPickerButton"
+        app:layout_constraintTop_toTopOf="@+id/colorPickerButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
