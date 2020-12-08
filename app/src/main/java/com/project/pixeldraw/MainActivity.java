@@ -234,6 +234,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.help:
+                FragmentManager manager = getSupportFragmentManager();
+                HelpFragment dialog = new HelpFragment();
+                dialog.show(manager, "HelpDialog");
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

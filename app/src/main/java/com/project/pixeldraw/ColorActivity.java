@@ -66,11 +66,11 @@ public class ColorActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.color_changed_to)+" "+getString(R.string.white), Toast.LENGTH_SHORT).show();
         }
         if (text == getString(R.string.yellow)) {
-            MainActivity.UpdateColor(3);
+            MainActivity.UpdateColor(4);
             Toast.makeText(this, getString(R.string.color_changed_to)+" "+getString(R.string.yellow), Toast.LENGTH_SHORT).show();
         }
         if (text == getString(R.string.orange)) {
-            MainActivity.UpdateColor(4);
+            MainActivity.UpdateColor(3);
             Toast.makeText(this, getString(R.string.color_changed_to)+" "+getString(R.string.orange), Toast.LENGTH_SHORT).show();
         }
         if (text == getString(R.string.blue)) {

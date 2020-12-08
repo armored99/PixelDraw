@@ -22,5 +22,8 @@
     <string name="white">White</string>
     <string name="black">Black</string>
     <string name="color_changed_to">Color Changed To </string>
+    <string name="help">Help</string>
+    <string name="ok">OK</string>
+    <string name="info">The Strokes counter keeps track of how many times the drawing has been altered and the Pixel amount shows the dimensions of the drawing</string>
 
 </resources>

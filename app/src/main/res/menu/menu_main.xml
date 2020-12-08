@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.project.pixeldraw.MainActivity">
     <item
+        android:title="@string/help"
+        android:id="@+id/help"
+        android:icon="@drawable/add"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/settings"
         android:title="@string/settings"
         android:icon="@drawable/settings"

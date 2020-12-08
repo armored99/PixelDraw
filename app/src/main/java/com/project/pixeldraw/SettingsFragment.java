@@ -29,7 +29,7 @@ public class SettingsFragment extends PreferenceFragment
         String pixelGridSize = sharedPrefs.getString(PREFERENCE_PIXEL_GRID_SIZE, "0");
         Preference gridPref = findPreference(PREFERENCE_PIXEL_GRID_SIZE);
         int pgs = Integer.parseInt(pixelGridSize);
-        if (pgs <= 0 || pgs > 1000) {
+        if (pgs <= 0 || pgs > 200) {
             //questionPref.setSummary(getResources().getString(R.string.pref_none));
         }
         else {
