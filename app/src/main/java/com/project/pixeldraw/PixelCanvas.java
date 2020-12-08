@@ -7,20 +7,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class PixelGame {
+public class PixelCanvas {
 
-    public static int NUM_COLORS = 5;
     public static int GRID_SIZE = Integer.parseInt(MainActivity.mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
 
     public enum AddPixelStatus { Added, Rejected, Removed };
-    private static PixelGame mPixelsGame;
+    private static PixelCanvas mPixelsCanvas;
 
     private int mStrokes;
     private int mScore;
     private Pixel[][] mPixels;
     private ArrayList<Pixel> mSelectedPixels;
+    public int mPixelColor = 6;
 
-    private PixelGame() {
+    private PixelCanvas() {
         mScore = 0;
         // Create Pixels for the 2d array
         mPixels = new Pixel[GRID_SIZE][GRID_SIZE];
@@ -33,11 +33,11 @@ public class PixelGame {
         mSelectedPixels = new ArrayList();
     }
 
-    public static PixelGame getInstance() {
-        if (mPixelsGame == null) {
-            mPixelsGame = new PixelGame();
+    public static PixelCanvas getInstance() {
+        if (mPixelsCanvas == null) {
+            mPixelsCanvas = new PixelCanvas();
         }
-        return mPixelsGame;
+        return mPixelsCanvas;
     }
     public void changeSize(int mGRID_SIZE) {
         GRID_SIZE = mGRID_SIZE;
@@ -49,12 +49,8 @@ public class PixelGame {
         }
     }
 
-    public int getMovesLeft() {
+    public int getStrokes() {
         return mStrokes;
-    }
-
-    public int getScore() {
-        return mScore;
     }
 
     public Pixel getPixel(int row, int col) {
@@ -164,7 +160,7 @@ public class PixelGame {
                     PixelCurrent.color = PixelAbove.color;
                 }*/
                 Pixel PixelCurrent = mPixels[Pixel.row][Pixel.col];
-                PixelCurrent.setRandomColor();
+                PixelCurrent.setColor(mPixelColor);
                 // Add new Pixel at top
                 //Pixel topPixel = mPixels[0][Pixel.col];
                 //topPixel.setRandomColor();
@@ -177,24 +173,19 @@ public class PixelGame {
         }
     }
 
-    // Start a new game
-    public void newGame() {
+    // Start a new Canvas
+    public void newCanvas() {
         mScore = 0;
         mStrokes = 0;
 
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
-                mPixels[row][col].setColor();
+                mPixels[row][col].setCanvasColor();
             }
         }
     }
 
     public void resetCanvas() {
-        mPixelsGame = new PixelGame();
+        mPixelsCanvas = new PixelCanvas();
     }
-
-    /* Determine if the game is over
-    public boolean isGameOver() {
-        return mStrokes == 0;
-    }*/
 }

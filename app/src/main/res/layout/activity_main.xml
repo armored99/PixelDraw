@@ -57,11 +57,11 @@
         android:textColor="@color/colorPrimaryDark"
         android:layout_marginBottom="50dp"
         android:onClick="ChangeColor"
-        app:layout_constraintBottom_toTopOf="@+id/gameGrid"
-        app:layout_constraintLeft_toLeftOf="@+id/gameGrid" />
+        app:layout_constraintBottom_toTopOf="@+id/pixelGrid"
+        app:layout_constraintLeft_toLeftOf="@+id/pixelGrid" />
 
     <com.project.pixeldraw.PixelGrid
-        android:id="@+id/gameGrid"
+        android:id="@+id/pixelGrid"
         android:layout_width="300dp"
         android:layout_height="300dp"
         app:layout_constraintRight_toRightOf="parent"
@@ -76,9 +76,9 @@
         android:text="@string/new_canvas"
         android:textColor="@color/colorPrimaryDark"
         android:layout_marginBottom="50dp"
-        android:onClick="newGameClick"
+        android:onClick="newCanvasClick"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/gameGrid" />
+        app:layout_constraintRight_toRightOf="@+id/pixelGrid" />
 
     <Button
         android:id="@+id/savePhotoButton"
@@ -89,7 +89,7 @@
         android:layout_marginBottom="50dp"
         android:onClick="saveImageToExternalStorage"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/gameGrid" />
+        app:layout_constraintLeft_toLeftOf="@+id/pixelGrid" />
 
     <ImageView
         android:id="@+id/colorImage"

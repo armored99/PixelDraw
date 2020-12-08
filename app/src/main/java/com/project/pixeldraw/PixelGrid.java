@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class PixelGrid extends View {
 
-    private PixelGame mGame;
+    private PixelCanvas mCanvas;
 
     private final int Pixel_RADIUS = 40;
 
@@ -37,15 +37,14 @@ public class PixelGrid extends View {
     private Paint mPixelPaint;
     private Paint mPathPaint;
     private AnimatorSet mAnimatorSet;
-    public int mPixelColor = 6;
 
     // private AnimatorSet mAnimatorSet;
 
     public PixelGrid(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        // Used to access the game state
-        mGame = PixelGame.getInstance();
+        // Used to access the Canvas state
+        mCanvas = PixelCanvas.getInstance();
 
         // Get color resources
         mPixelColors = getResources().getIntArray(R.array.pixelColors);
@@ -75,8 +74,8 @@ public class PixelGrid extends View {
     protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
         int boardWidth = (width - getPaddingLeft() - getPaddingRight());
         int boardHeight = (height - getPaddingTop() - getPaddingBottom());
-        mCellWidth = boardWidth / PixelGame.GRID_SIZE;
-        mCellHeight = boardHeight / PixelGame.GRID_SIZE;
+        mCellWidth = boardWidth / PixelCanvas.GRID_SIZE;
+        mCellHeight = boardHeight / PixelCanvas.GRID_SIZE;
         resetPixels();
     }
 
@@ -85,16 +84,16 @@ public class PixelGrid extends View {
         super.onDraw(canvas);
 
         // Draw Pixels
-        for (int row = 0; row < PixelGame.GRID_SIZE; row++) {
-            for (int col = 0; col < PixelGame.GRID_SIZE; col++) {
-                Pixel Pixel = mGame.getPixel(row, col);
-                mPixelPaint.setColor(mPixelColors[mPixelColor]);
+        for (int row = 0; row < PixelCanvas.GRID_SIZE; row++) {
+            for (int col = 0; col < PixelCanvas.GRID_SIZE; col++) {
+                Pixel pixel = mCanvas.getPixel(row, col);
+                mPixelPaint.setColor(mPixelColors[pixel.color]);
                 canvas.drawRect(col * mCellHeight, row * mCellWidth, col * mCellHeight + mCellHeight, row * mCellWidth + mCellWidth, mPixelPaint);
             }
         }
         if (!mAnimatorSet.isRunning()) {
             // Draw connector
-            ArrayList<Pixel> selectedPixels = mGame.getSelectedPixels();
+            ArrayList<Pixel> selectedPixels = mCanvas.getSelectedPixels();
             if (!selectedPixels.isEmpty()) {
                 Path path = new Path();
                 Pixel Pixel = selectedPixels.get(0);
@@ -105,7 +104,7 @@ public class PixelGrid extends View {
                     path.lineTo(Pixel.centerX, Pixel.centerY);
                 }
 
-                mPathPaint.setColor(mPixelColors[7]);
+                mPathPaint.setColor(mPixelColors[8]);
                 canvas.drawPath(path, mPathPaint);
             }
         }
@@ -122,11 +121,11 @@ public class PixelGrid extends View {
         int y = (int) event.getY();
         int col = x / mCellWidth;
         int row = y / mCellHeight;
-        Pixel selectedPixel = mGame.getPixel(row, col);
+        Pixel selectedPixel = mCanvas.getPixel(row, col);
 
         // Return previously selected Pixel if touch moves outside the grid
         if (selectedPixel == null) {
-            selectedPixel = mGame.getLastSelectedPixel();
+            selectedPixel = mCanvas.getLastSelectedPixel();
         }
 
         // Notify activity that a Pixel is selected
@@ -146,15 +145,15 @@ public class PixelGrid extends View {
     }
 
     private void resetPixels() {
-        for (int row = 0; row < PixelGame.GRID_SIZE; row++) {
-            for (int col = 0; col < PixelGame.GRID_SIZE; col++) {
-                Pixel Pixel = mGame.getPixel(row, col);
+        for (int row = 0; row < PixelCanvas.GRID_SIZE; row++) {
+            for (int col = 0; col < PixelCanvas.GRID_SIZE; col++) {
+                Pixel Pixel = mCanvas.getPixel(row, col);
                  Pixel.radius = Pixel_RADIUS;
                 Pixel.centerX = col * mCellWidth + (mCellWidth / 2);
                 Pixel.centerY = row * mCellHeight + (mCellHeight / 2);
             }
         }
-        mGame = PixelGame.getInstance();
+        mCanvas = PixelCanvas.getInstance();
     }
 
     public void animatePixels() {
@@ -185,7 +184,7 @@ public class PixelGrid extends View {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                for (Pixel Pixel : mGame.getSelectedPixels()) {
+                for (Pixel Pixel : mCanvas.getSelectedPixels()) {
                     Pixel.radius = Pixel_RADIUS * (float) animation.getAnimatedValue();
                 }
                 invalidate();

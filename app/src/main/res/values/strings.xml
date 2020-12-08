@@ -23,15 +23,4 @@
     <string name="black">Black</string>
     <string name="color_changed_to">Color Changed To </string>
 
-    <string-array name="pref_subject_order">
-        <item>Alphabetic</item>
-        <item>Most recent first</item>
-        <item>Oldest first</item>
-    </string-array>
-
-    <string-array name="pref_subject_order_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
 </resources>

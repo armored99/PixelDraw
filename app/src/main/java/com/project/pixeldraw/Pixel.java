@@ -15,19 +15,19 @@ public class Pixel {
 
     public Pixel(int row, int col) {
         randomGen = new Random();
-        setColor();
+        setCanvasColor();
         selected = false;
         radius = 1;
         this.row = row;
         this.col = col;
     }
 
-    public void setRandomColor() {
-        color = 5;
+    public void setCanvasColor() {
+        color = 7;
         //color = randomGen.nextInt(DotsGame.NUM_COLORS);
     }
-    public void setColor() {
-        color = 6;
+    public void setColor(int mColor) {
+        color = mColor;
     }
 
     public boolean isAdjacent(Pixel pixel) {

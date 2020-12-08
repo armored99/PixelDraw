@@ -36,8 +36,8 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PixelGame mGame;
-    public static PixelGrid mPixelsGrid;
+    private static PixelCanvas mCanvas;
+    private static PixelGrid mPixelsGrid;
     private TextView mStrokes;
     private static ImageView mColorImage;
     private TextView mPixels;
@@ -59,19 +59,21 @@ public class MainActivity extends AppCompatActivity {
         mStrokes = findViewById(R.id.strokes);
         mPixels = findViewById(R.id.pixel);
         mColorImage = findViewById(R.id.colorImage);
-        mPixelsGrid = findViewById(R.id.gameGrid);
+        mPixelsGrid = findViewById(R.id.pixelGrid);
         mPixelsGrid.setGridListener(mGridListener);
         GRID_SIZE = Integer.parseInt(mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
         mPixels.setText(Integer.toString(GRID_SIZE));
-        mGame = PixelGame.getInstance();
-        newGame();
+        mCanvas = PixelCanvas.getInstance();
+        newCanvas();
     }
+    //Opens up the ColorActivity
     public void ChangeColor(View view){
         Intent intent = new Intent(MainActivity.this, ColorActivity.class);
         startActivity(intent);
     }
+    //changes the color that is used when drawing
     public static void UpdateColor(int mColor){
-        mPixelsGrid.mPixelColor = mColor;
+        mCanvas.mPixelColor = mColor;
         mColorImage.setBackgroundColor(mPixelsGrid.getmPixelsColor()[mColor]);
     }
 
@@ -123,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 FileOutputStream out = new FileOutputStream(file);
                 mPixelsGrid.getBitmap().compress(Bitmap.CompressFormat.JPEG, 10, out);
-                //mPixelsGrid.mBitmap.compress(Bitmap.CompressFormat.JPEG, 10, out);
                 out.flush();
                 out.close();
                 Toast.makeText(this, R.string.photo_saved, Toast.LENGTH_SHORT).show();
@@ -150,31 +151,24 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onPixelSelected(Pixel Pixel, PixelGrid.PixelSelectionStatus status) {
 
-            // Ignore selections when game is over
-            //if (mGame.isGameOver()) return;
-
             // Add to list of selected Pixels
-            mGame.addSelectedPixel(Pixel);
+            mCanvas.addSelectedPixel(Pixel);
 
-            // If done selecting Pixels then replace selected Pixels and display new moves and score
+            // If done selecting Pixels then replace selected Pixels.
             if (status == PixelGrid.PixelSelectionStatus.Last) {
-                if (mGame.getSelectedPixels().size() > 0) {
+                if (mCanvas.getSelectedPixels().size() > 0) {
                     mPixelsGrid.animatePixels();
-
-                    // These methods must be called AFTER the animation completes
-                    //mGame.finishMove();
-                    //updateMovesAndScore();
                 } else {
-                    mGame.clearSelectedPixels();
+                    mCanvas.clearSelectedPixels();
                 }
             }
 
-            // Display changes to the game
+            // Display changes to the Canvas
             mPixelsGrid.invalidate();
         }
         @Override
         public void onAnimationFinished() {
-            mGame.finishMove();
+            mCanvas.finishMove();
             mPixelsGrid.invalidate();
             updateMovesAndScore();
         }
@@ -191,14 +185,14 @@ public class MainActivity extends AppCompatActivity {
         if (mGRID_SIZE != GRID_SIZE) {
             GRID_SIZE = Integer.parseInt(mSharedPrefs.getString(SettingsFragment.PREFERENCE_PIXEL_GRID_SIZE, "20"));
             mPixels.setText(Integer.toString(GRID_SIZE));
-            mGame.changeSize(GRID_SIZE);
+            mCanvas.changeSize(GRID_SIZE);
             recreate();
         }
 
     }
 
 
-    public void newGameClick(View view) {
+    public void newCanvasClick(View view) {
         // Animate down off screen
         ObjectAnimator moveBoardOff = ObjectAnimator.ofFloat(mPixelsGrid,
                 "translationY", mPixelsGrid.getHeight() * 1.5f);
@@ -207,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
         moveBoardOff.addListener(new AnimatorListenerAdapter() {
             public void onAnimationEnd(Animator animation) {
-                newGame();
+                newCanvas();
 
                 // Animate from above the screen down to default location
                 ObjectAnimator moveBoardOn = ObjectAnimator.ofFloat(mPixelsGrid,
@@ -218,15 +212,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void newGame() {
-        mGame.newGame();
+    private void newCanvas() {
+        mCanvas.newCanvas();
         mPixelsGrid.invalidate();
         updateMovesAndScore();
     }
 
     private void updateMovesAndScore() {
-        mStrokes.setText(Integer.toString(mGame.getMovesLeft()));
-        //mPixels.setText(Integer.toString(mGame.getScore()));
+        mStrokes.setText(Integer.toString(mCanvas.getStrokes()));
+        //mPixels.setText(Integer.toString(mCanvas.getScore()));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
